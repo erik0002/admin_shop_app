@@ -2,9 +2,9 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const app = express();
@@ -32,6 +32,20 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+// main()
+//     .then(result => {
+//         app.listen(3000);
+//     })
+//     .catch(err => console.log(err));
+//
+// async function main() {
+//     await mongoose.connect('mongodb+srv://YeliazarKazhura:GaJkQF4NUj6Gm5Qh@cluster0.hior4.mongodb.net/?retryWrites=true&w=majority');
+//     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+// }
+
+mongoose.connect('mongodb+srv://YeliazarKazhura:GaJkQF4NUj6Gm5Qh@cluster0.hior4.mongodb.net/?retryWrites=true&w=majority')
+    .then(() => {
+        console.log('Connected!');
+        app.listen(3000);
+    })
+    .catch(err => console.log(err));
