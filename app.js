@@ -18,14 +18,14 @@ const shopRoutes = require('./routes/shop');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  User.findById(1)
-    .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
-      next();
-    })
-    .catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+//   User.findById(1)
+//     .then(user => {
+//       req.user = new User(user.name, user.email, user.cart, user._id);
+//       next();
+//     })
+//     .catch(err => console.log(err));
+// });
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
@@ -43,9 +43,17 @@ app.use(errorController.get404);
 //     // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 // }
 
-mongoose.connect('mongodb+srv://YeliazarKazhura:GaJkQF4NUj6Gm5Qh@cluster0.hior4.mongodb.net/?retryWrites=true&w=majority')
+mongoose.set("strictQuery", false);
+mongoose.connect('mongodb://127.0.0.1:27017/shop')
     .then(() => {
-        console.log('Connected!');
-        app.listen(3000);
-    })
+    console.log('Connected!');
+    app.listen(3000);
+})
     .catch(err => console.log(err));
+
+// mongoose.connect('mongodb+srv://YeliazarKazhura:GaJkQF4NUj6Gm5Qh@cluster0.hior4.mongodb.net/?retryWrites=true&w=majority')
+//     .then(() => {
+//         console.log('Connected!');
+//         app.listen(3000);
+//     })
+//     .catch(err => console.log(err));
